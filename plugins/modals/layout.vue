@@ -33,10 +33,13 @@ export default {
         }
     },
     methods :{
-        open(){
+        open(params){
+            console.log(params)
+            this.payload = params.payload;
+
             this.visible = true;
         },
-        close (){
+        close (params){
             this.visible= false
         }
     },
@@ -75,6 +78,7 @@ export default {
             background-color: #fff;
             padding : 30px;
             border-radius: 4px;
+            min-width: 400px;
         }
     }
 </style>

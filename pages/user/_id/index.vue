@@ -5,7 +5,8 @@
                 <h3>Author {{author.name}} : Learning about literatures</h3>
                 <div class="author">
                     <button class="btn btn-success">Start Now</button>
-                    <button class="btn btn-primary" @click.prevent="showModal()">Create a account</button>
+                    <button class="btn btn-primary" @click.prevent="showModal('createCard')">Create a Card</button>
+                    <button class="btn btn-primary" @click.prevent="showModal('userFormModal')">Edit a User</button>
                 </div>
             </div>
             <hr>
@@ -13,31 +14,6 @@
                 <CardList v-for="(book) in books" :key="book._id" :picture="book.picture" :title="book.title" />
             </div>
         </div>
-        <v-modal name="userFormModal">
-            <h2>Create a new User</h2>
-            <form action="">
-                <div class="form-group">
-                    <label for="">Name:</label>
-                    <input type="text" class="form-control" placeholder="Please enter name">
-                </div>
-                <div class="form-group">
-                    <label for="">Description:</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="">Image:</label>
-                    <input type="file" class="form-control-file">
-                    <div class="previewIamge"></div>
-                </div>
-                <button @click.prevent="closeModal()" class="btn btn-primary">
-                Close
-                </button>
-                <button @click.prevent="createModal()" class="btn btn-success">
-                    Create
-                </button>
-            </form>
-            
-        </v-modal>
     </section>
 </template>
 
@@ -82,13 +58,13 @@ export default {
         }
     },
     methods :{
-        showModal(){
-            console.log('modals ...')
-            this.$modal.opens({name : "userFormModal"})
+        showModal(name){
+            if(name === "userFormModal"){
+                this.$modal.opens({name : "userFormModal" ,payload : {...this.author , id : this.$route.params.id}})
+            }else if( name === 'createCard'){
+                this.$modal.opens({name : "createCard" })
+            }
         },
-        closeModal(){
-            this.$modal.closes({name : "userFormModal"})
-        }
     },
     components : {
         CardList

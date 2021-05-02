@@ -3,17 +3,48 @@
     <Header />
     <Nuxt />
     <Footer />
+    <v-modal v-slot="payload" name="userFormModal">
+      <h2>{{payload && payload.payload ? "Edit User" : "Create a new User"}}</h2>
+      <user-form :author="payload.payload" @submit="onSubmit($event)" />
+    </v-modal>
 
   </div>
 </template>
 <script>
+import axios from "axios"
+
+import UserForm from "@/components/UserForm"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 
 export default {
   components : {
     Header,
-    Footer
+    Footer,
+    UserForm
+  },
+  methods:{
+    onSubmit(dataAuthor){
+      if(dataAuthor && !dataAuthor.id){
+        axios.post("https://nuxt-author-default-rtdb.firebaseio.com/author.json" , dataAuthor)
+        .then(data =>{
+            console.log(data)
+        })
+        .catch(e => {
+            console.log(e)
+        })
+      }else {
+        const userId = dataAuthor.id;
+        delete dataAuthor.id
+        axios.put("https://nuxt-author-default-rtdb.firebaseio.com/author/"+ userId +".json" , dataAuthor)
+      .then(data =>{
+          console.log(data)
+      })
+      .catch(e => {
+          console.log(e)
+      })
+      }
+    }
   }
 }
 </script>

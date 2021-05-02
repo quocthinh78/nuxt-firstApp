@@ -17,10 +17,10 @@
         Close
         </button>
         <button type="submit" class="btn btn-success">
-            Create
+            {{author && author.id ? "Update" : "Create"}}
         </button>
     </form>
-</template>
+</template>  
 
 <script>
 export default {

@@ -14,16 +14,12 @@
             :img="author.img"
             />
         </ul>
-        <v-modal name="userFormModal">
-            <h2>Create a new User</h2>
-            <user-form @submit="onSubmit($event)" />
-        </v-modal>
+        
     </div>
 </template>
 
 <script>
 import axios from "axios"
-import UserForm from "@/components/UserForm"
 import UserList from "@/components/UserList"
 export default {
     // fetch(context) {
@@ -70,23 +66,12 @@ export default {
     // },
     methods :{
         showModal(){
-            console.log('modals ...')
-            this.$modal.opens({name : "userFormModal"})
+        this.$modal.opens({name : "userFormModal"})
         },
-        onSubmit(dataAuthor){
-            console.log(dataAuthor)
-            axios.post("https://nuxt-author-default-rtdb.firebaseio.com/author.json" , dataAuthor)
-            .then(data =>{
-                console.log(data)
-            })
-            .catch(e => {
-                console.log(e)
-            })
-        }
+        
     },
     components : {
         UserList,
-        UserForm
     }
 }
 </script>
