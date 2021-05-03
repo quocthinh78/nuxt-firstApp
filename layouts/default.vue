@@ -2,6 +2,7 @@
   <div>
     <Header />
     <Nuxt />
+    <AlertComponent />
     <Footer />
     <v-modal v-slot="payload" name="userFormModal">
       <h2>{{payload && payload.payload ? "Edit User" : "Create a new User"}}</h2>
@@ -11,7 +12,6 @@
   </div>
 </template>
 <script>
-import axios from "axios"
 
 import UserForm from "@/components/UserForm"
 import Header from "../components/Header"
@@ -26,23 +26,14 @@ export default {
   methods:{
     onSubmit(dataAuthor){
       if(dataAuthor && !dataAuthor.id){
-        axios.post("https://nuxt-author-default-rtdb.firebaseio.com/author.json" , dataAuthor)
-        .then(data =>{
-            console.log(data)
-        })
-        .catch(e => {
-            console.log(e)
-        })
+        this.$store.dispatch("addUser", dataAuthor)
+        .then(() => this.$modal.closes({name : 'userFormModal'}))
       }else {
-        const userId = dataAuthor.id;
-        delete dataAuthor.id
-        axios.put("https://nuxt-author-default-rtdb.firebaseio.com/author/"+ userId +".json" , dataAuthor)
-      .then(data =>{
-          console.log(data)
-      })
-      .catch(e => {
-          console.log(e)
-      })
+        this.$store.dispatch("editUser" , dataAuthor)
+        .then(() => {
+          this.$modal.closes({name : 'userFormModal'})
+          this.$router.push("/user")
+        })
       }
     }
   }

@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import axios from "axios"
 import UserList from "@/components/UserList"
 export default {
     // fetch(context) {

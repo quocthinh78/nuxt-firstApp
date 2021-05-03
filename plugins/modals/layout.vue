@@ -34,9 +34,7 @@ export default {
     },
     methods :{
         open(params){
-            console.log(params)
             this.payload = params.payload;
-
             this.visible = true;
         },
         close (params){

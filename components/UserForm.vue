@@ -13,7 +13,7 @@
             <input v-model="editAuthor.img" type="text" placeholder="http://thubnailpicture00.png" class="form-control-file">
             <div class="previewIamge"></div>
         </div>
-        <button @click.prevent="closeModal()" class="btn btn-primary">
+        <button type="button" @click.prevent="closeModal()" class="btn btn-primary">
         Close
         </button>
         <button type="submit" class="btn btn-success">

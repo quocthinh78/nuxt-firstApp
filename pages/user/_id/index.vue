@@ -18,7 +18,6 @@
 </template>
 
 <script>
-import axios from "axios"
 import CardList from "@/components/CardList"
 export default {
     // validate(context){
@@ -26,10 +25,10 @@ export default {
     //     return /^[0-9]{0,9}$/.test(context.params.id);
     // },
     asyncData(context) {
-        return axios.get(`https://nuxt-author-default-rtdb.firebaseio.com/author/${context.params.id}.json`)
+        return context.$axios.$get(`https://nuxt-author-default-rtdb.firebaseio.com/author/${context.params.id}.json`)
         .then(res =>{
             return {
-                author : res.data
+                author : res
             }
         })
         .catch(e =>{
@@ -65,6 +64,11 @@ export default {
                 this.$modal.opens({name : "createCard" })
             }
         },
+    },
+    head(){
+        return {
+            title : `${this.author.name}`
+        }
     },
     components : {
         CardList

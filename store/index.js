@@ -1,5 +1,4 @@
 import Vuex from "vuex";
-import axios from "axios"
 const createStore = () => {
     return new Vuex.Store({
         state: {
@@ -40,22 +39,53 @@ const createStore = () => {
             //         })
             // },
             nuxtServerInit(vuexContext, context) {
-                return axios.get("https://nuxt-author-default-rtdb.firebaseio.com/author.json")
+                console.log(context)
+                return context.$axios.$get(process.env.baseUrl + "author.json")
                     .then(res => {
                         let authorsList = [];
-                        for (let key in res.data) {
-                            authorsList.push({...res.data[key], id: key })
+                        for (let key in res) {
+                            console.log(res)
+                            authorsList.push({...res[key], id: key })
                         }
                         vuexContext.commit("setAuthor", authorsList)
                     })
             },
             setAuthor(context, payload) {
                 context.commit("setAuthor", payload);
+            },
+            addUser(context, dataAuthor) {
+                return this.$axios.$post("https://nuxt-author-default-rtdb.firebaseio.com/author.json", dataAuthor)
+                    .then(result => {
+                        console.log(result)
+                        context.commit("addUser", {...dataAuthor, id: result.name })
+                    })
+                    .catch(e => {
+                        console.log(e)
+                    })
+            },
+            editUser(context, dataAuthor) {
+                const userId = dataAuthor.id;
+                delete dataAuthor.id
+                return this.$axios.$put("https://nuxt-author-default-rtdb.firebaseio.com/author/" + userId + ".json", dataAuthor)
+                    .then(result => {
+                        context.commit("editUser", {...result, id: userId })
+                    })
+                    .catch(e => {
+                        console.log(e)
+                    })
             }
         },
         mutations: {
             setAuthor: (state, payload) => {
                 state.authors = payload
+            },
+            addUser(state, user) {
+                state.authors.push(user);
+            },
+            editUser(state, user) {
+                console.log(user.id)
+                let idex = state.authors.findIndex(state => state.id == user.id)
+                state.authors[idex] = user;
             }
         }
     })

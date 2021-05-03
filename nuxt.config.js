@@ -17,7 +17,7 @@ export default {
     css: ['~/assets/scss/main.scss'],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-    plugins: ['@/plugins/modals/v-modal.js'],
+    plugins: ['@/plugins/modals/v-modal.js', "@/plugins/core-component.js"],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
     components: true,
@@ -36,9 +36,12 @@ export default {
         // bootstrap vue
         "bootstrap-vue/nuxt",
     ],
+    loading: '~/components/LoadingBar.vue',
 
     // Axios module configuration: https://go.nuxtjs.dev/config-axios
-    axios: {},
+    axios: {
+        baseUrl: 'https://nuxt-author-default-rtdb.firebaseio.com/'
+    },
 
     // PWA module configuration: https://go.nuxtjs.dev/pwa
     pwa: {
@@ -50,6 +53,12 @@ export default {
     // Content module configuration: https://go.nuxtjs.dev/config-content
     content: {},
 
+    env: {
+        baseUrl: 'https://nuxt-author-default-rtdb.firebaseio.com/'
+    },
     // Build Configuration: https://go.nuxtjs.dev/config-build
-    build: {}
+    build: {},
+    router: {
+        middleware: 'router-log'
+    }
 }
